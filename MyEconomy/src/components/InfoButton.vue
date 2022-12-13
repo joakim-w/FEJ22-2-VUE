@@ -14,10 +14,16 @@
 import { ref } from 'vue'
 import Modal from './Modal.vue';
 
-const modalOpen = ref(true)
+const modalOpen = ref(false)
 
 </script>
 
 <style scoped>
-
+  .info-btn {
+    display: inline-block;
+    cursor: pointer;
+  }
+  .fa-circle-info {
+    color: #639cb4;
+  }
 </style>

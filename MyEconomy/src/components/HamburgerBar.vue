@@ -1,5 +1,5 @@
 <template>
-  <button class="burger">
+  <button class="burger" @click="$emit('open')">
     <i class="fa-solid fa-bars"></i>
   </button>
 </template>

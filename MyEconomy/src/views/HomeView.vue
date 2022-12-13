@@ -30,9 +30,21 @@
       </p>
       <p>100 kr</p>
     </div>
-
-
   </Block>
+  <Block class="mt-1">
+    <div class="d-flex justify-between">
+      <p>Inkomster</p>
+      <p>60000</p>
+    </div>
+    <div class="d-flex justify-between mt-3">
+      <p>Utgifter</p>
+      <p>40000</p>
+    </div>
+  </Block>
+  <div class="d-flex flex-column gap-1 mt-1">
+    <RouterLink to="/income" class="btn">Mina inkomster</RouterLink>
+    <RouterLink to="/expenses" class="btn">Mina utgifter</RouterLink>
+  </div>
 
 </template>
 
