@@ -3,6 +3,11 @@
   --clr-base-text: #444444;
   --clr-main-bg: #ffffff;
   --clr-shadow: #0000002d;
+  --clr-red: #e58282;
+  --clr-yellow: #eec669;
+  --clr-green: #7bd67e;
+  --clr-active-link: #ddddeb;
+  --clr-dark-btn: hsl(240, 26%, 75%);
 }
 
 

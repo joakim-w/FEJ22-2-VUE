@@ -43,7 +43,9 @@
 .p-2 {
   padding: 2rem;
 }
-
+.p-1 {
+  padding: 1rem;
+}
 .btn {
   display: block;
   background-color: var(--clr-main-bg);
