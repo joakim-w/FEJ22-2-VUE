@@ -17,10 +17,11 @@
           <label for="repeatPassword">Repetera Lösenord: </label>
           <input type="password" class="form-control" id="repeatPassword" v-model="userCredentials.repeatPassword">
         </div>
-        <p class="h3 mb-1">Redan medlem? <RouterLink to="/login">Logga in</RouterLink> istället</p>
+        <p class="h3 mb-3">Redan medlem? <RouterLink to="/login">Logga in</RouterLink> istället</p>
         <button class="btn form-btn mb-2">Registrera</button>
         <button type="button" class="btn form-btn google-btn">
-          <div class="img-container"><img src="" alt=""></div>
+          <div class="img-container"><img :src="googleImg" alt="google icon"></div>
+          <p>Registrera med google</p>
         </button>
       </form>
 
@@ -30,6 +31,7 @@
 
 <script setup>
   import { ref } from 'vue'
+  import googleImg from '../assets/img/google.png'
   import Block from '../components/Block.vue'
 
   const userCredentials = ref({
