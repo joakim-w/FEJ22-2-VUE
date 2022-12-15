@@ -17,7 +17,7 @@
 
     <div class="d-flex justify-between text-bold mt-5">
       <p>Du sparar för tillfället</p>
-      <p>200</p>
+      <p>{{ savings.amount }}</p>
     </div>
     <div class="d-flex justify-between">
       <p>Rekommenderat sparande
@@ -38,7 +38,7 @@
     </div>
     <div class="d-flex justify-between mt-3">
       <p>Utgifter</p>
-      <p>40000</p>
+      <p>{{ totalExpenses }}</p>
     </div>
   </Block>
   <div class="d-flex flex-column gap-1 mt-1">
@@ -53,6 +53,13 @@ import Block from '../components/Block.vue';
 import HealthPartial from '../components/HealthPartial.vue';
 import InfoButton from '../components/InfoButton.vue';
 
+import { useExpensesStore } from '@/stores/expenses'
+import { storeToRefs } from 'pinia';
+
+const expensesStore = useExpensesStore()
+expensesStore.getExpenses()
+
+const { totalExpenses, savings } = storeToRefs(expensesStore)
 
 </script>
 

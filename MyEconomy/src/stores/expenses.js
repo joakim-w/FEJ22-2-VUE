@@ -33,6 +33,21 @@ export const useExpensesStore = defineStore('expenses', () => {
     return Array.from(setOfCategories).sort()
   })
 
+  const getSavings = async () => {
+    const colRef = collection(db, 'savings')
+    const q = query(colRef, where('userId', '==', user.value.uid))
+
+    const querySnapshot = await getDocs(q)
+    if(!querySnapshot.docs.length) {
+      console.log('no doc found')
+      savings.value.amount = 0
+      return
+    }
+
+    querySnapshot.forEach(doc => savings.value = {id: doc.id, ...doc.data()})
+
+  }
+
   const getExpenses = async () => {
     user.value = auth.currentUser
     if(!user.value) {
@@ -40,7 +55,7 @@ export const useExpensesStore = defineStore('expenses', () => {
       // getExpenses()
       return
     }
-
+    getExpenses()
     exp.value = []
 
     const colRef = collection(db, 'expenses')

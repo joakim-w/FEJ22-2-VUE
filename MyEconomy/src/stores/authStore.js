@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { auth, googleProvider } from '../firebase/config'
+import { auth, googleProvider, db } from '../firebase/config'
 import { signInWithEmailAndPassword, onAuthStateChanged, createUserWithEmailAndPassword, signOut, signInWithPopup } from 'firebase/auth'
+import { getDocs, addDoc, collection, query, where } from 'firebase/firestore'
 
 export const useAuthStore = defineStore('auth', () => {
 
@@ -13,12 +14,27 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref(auth.currentUser)
   const error = ref(null)
 
+  const createSavings = async () => {
+
+    const colRef = collection(db, 'savings')
+    const q = query(colRef, where('userId', '==', user.value.uid))
+
+    const querySnapshot = await getDocs(q)
+    if(querySnapshot.docs.length) {
+      return true
+    }
+    console.log('no such document')
+    await addDoc(collection(db, 'savings'), {name: 'Sparande', amount: 0, userId: user.value.uid})
+    return false
+  }
+
 
   const login = async (email, password) => {
     error.value = null
     try {
       const res = await signInWithEmailAndPassword(auth, email, password)
       error.value = null
+      await createSavings()
       return res
     } catch (err) {
       console.log(err.message)
@@ -36,6 +52,7 @@ export const useAuthStore = defineStore('auth', () => {
       }
 
       error.value = null
+      await createSavings()
       return res
 
     } catch (err) {
@@ -64,6 +81,7 @@ export const useAuthStore = defineStore('auth', () => {
       }
 
       error.value = null
+      await createSavings()
       return res
 
     } catch (error) {
