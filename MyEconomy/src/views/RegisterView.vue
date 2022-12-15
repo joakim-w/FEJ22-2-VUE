@@ -34,13 +34,31 @@
   import googleImg from '../assets/img/google.png'
   import Block from '../components/Block.vue'
 
+  import { useAuthStore } from '../stores/authStore'
+  import { storeToRefs } from 'pinia'
+  import { useRouter } from 'vue-router'
+
+  const router = useRouter()
+  const authStore = useAuthStore()
+  const { error } = storeToRefs(authStore)
+
   const userCredentials = ref({
     email: '',
     password: '',
     repeatPassword: ''
   })
 
-  const handleSubmit = () => {}
+  const handleSubmit = async () => {
+    if(userCredentials.value.password !== userCredentials.value.repeatPassword) {
+      error.value = 'Lösenorden måste vara lika'
+      return
+    }
+    await authStore.signup(userCredentials.value.email, userCredentials.value.password)
+    if(error.value) return
+
+    router.push({ name: 'home' })
+
+  }
 
 </script>
 

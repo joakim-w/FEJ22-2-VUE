@@ -3,7 +3,7 @@
     <Transition name="menu">
       <div class="menu-wrapper" @click.self="$emit('close')" v-if="visible">
         <div class="menu">
-          <button class="btn w-100"><i class="fa-solid fa-right-from-bracket"></i> Logga ut</button>
+          <button @click="logoutUser" class="btn w-100"><i class="fa-solid fa-right-from-bracket"></i> Logga ut</button>
           <RouterLink to="/" @click="$emit('close')" class="btn"><i class="fa-solid fa-house"></i> Startsida</RouterLink>
           <RouterLink to="/" @click="$emit('close')" class="btn"><i class="fa-solid fa-coins"></i> Inkomster</RouterLink>
           <RouterLink to="/" @click="$emit('close')" class="btn"><i class="fa-solid fa-chart-column"></i> Utgifter</RouterLink>
@@ -14,8 +14,24 @@
 </template>
 
 <script setup>
-  defineEmits(['close'])
+import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/authStore';
+
+  const emit = defineEmits(['close'])
   defineProps(['visible'])
+
+  const auth = useAuthStore()
+  const { error } = storeToRefs(auth)
+  const router = useRouter()
+
+  const logoutUser = async () => {
+    await auth.logout()
+    if(error.value) return
+
+    emit('close')
+    router.push({ name: 'login' })
+  }
 </script>
 
 <style scoped>
