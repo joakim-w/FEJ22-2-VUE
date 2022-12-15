@@ -1,15 +1,25 @@
 <template>
-  <HamburgerBar @open="visible = !visible" />
-  <NavMenu :visible="visible" @close="visible = !visible" />
+  <HamburgerBar v-if="showMenu" @open="visible = !visible" />
+  <NavMenu v-if="showMenu" :visible="visible" @close="visible = !visible" />
   <RouterView />
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
   import HamburgerBar from './components/HamburgerBar.vue'
   import NavMenu from './components/NavMenu.vue';
 
+  const route = useRoute()
   const visible = ref(false)
+
+  const showMenu = computed(() => {
+    if(route.path === '/login' || route.path === '/register') {
+      return false
+    }
+    return true
+  })
+
 </script>
 
 <style scoped>

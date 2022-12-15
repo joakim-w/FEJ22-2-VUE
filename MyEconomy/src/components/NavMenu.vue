@@ -14,6 +14,7 @@
 </template>
 
 <script setup>
+  defineEmits(['close'])
   defineProps(['visible'])
 </script>
 
