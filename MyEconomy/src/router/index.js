@@ -3,23 +3,48 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 
+import { auth } from '../firebase/config'
+
+const requireAuth = (to, from, next) => {
+  const user = auth.currentUser
+  console.log('current user in auth guard: ', user)
+
+  if(!user) {
+    next({ name: 'login' })
+  } else {
+    next()
+  }
+
+}
+const requireNoAuth = (to, from, next) => {
+  const user = auth.currentUser
+  if(user) {
+    next({ name: 'home' })
+  } else {
+    next()
+  }
+}
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      beforeEnter: requireAuth
     },
     {
       path: '/login',
       name: 'login',
-      component: LoginView
+      component: LoginView,
+      beforeEnter: requireNoAuth
     },
     {
       path: '/register',
       name: 'register',
-      component: RegisterView
+      component: RegisterView,
+      beforeEnter: requireNoAuth
     },
     
   ]

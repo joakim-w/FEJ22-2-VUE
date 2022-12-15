@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { auth } from '../firebase/config'
-import { signInWithEmailAndPassword, onAuthStateChanged, createUserWithEmailAndPassword, signOut } from 'firebase/auth'
+import { auth, googleProvider } from '../firebase/config'
+import { signInWithEmailAndPassword, onAuthStateChanged, createUserWithEmailAndPassword, signOut, signInWithPopup } from 'firebase/auth'
 
 export const useAuthStore = defineStore('auth', () => {
 
@@ -13,6 +13,18 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref(auth.currentUser)
   const error = ref(null)
 
+
+  const login = async (email, password) => {
+    error.value = null
+    try {
+      const res = await signInWithEmailAndPassword(auth, email, password)
+      error.value = null
+      return res
+    } catch (err) {
+      console.log(err.message)
+      error.value = 'Felaktiga inloggningsuppgifter'
+    }
+  }
 
   const signup = async (email, password) => {
     error.value = null
@@ -43,6 +55,22 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  const signInWithGoogle = async () => {
+    error.value = null
+    try {
+      const res = await signInWithPopup(auth, googleProvider)
+      if(!res) {
+        throw new Error('Kunde inte färdigställa inloggningen')
+      }
 
-  return { user, error, signup, logout }
+      error.value = null
+      return res
+
+    } catch (error) {
+      console.log(err.message)
+      error.value = err.message
+    }
+  }
+
+  return { user, error, signup, logout, login, signInWithGoogle }
 })

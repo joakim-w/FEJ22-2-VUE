@@ -19,7 +19,7 @@
         </div>
         <p class="h3 mb-3">Redan medlem? <RouterLink to="/login">Logga in</RouterLink> istället</p>
         <button class="btn form-btn mb-2">Registrera</button>
-        <button type="button" class="btn form-btn google-btn">
+        <button @click="handleGoogleSignIn" type="button" class="btn form-btn google-btn">
           <div class="img-container"><img :src="googleImg" alt="google icon"></div>
           <p>Registrera med google</p>
         </button>
@@ -37,6 +37,7 @@
   import { useAuthStore } from '../stores/authStore'
   import { storeToRefs } from 'pinia'
   import { useRouter } from 'vue-router'
+
 
   const router = useRouter()
   const authStore = useAuthStore()
@@ -58,6 +59,12 @@
 
     router.push({ name: 'home' })
 
+  }
+
+  const handleGoogleSignIn = async () => {
+    await authStore.signInWithGoogle()
+    if(error.value) return
+    router.push({ name: 'home' })
   }
 
 </script>
