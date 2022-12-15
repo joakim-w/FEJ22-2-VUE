@@ -1,8 +1,17 @@
 <template>
   <AddButton @click="showModal = !showModal" />
   <Modal :visible="showModal" @close="showModal = false">
-    <button class="btn w-100">Ändra Sparande</button>
+    <button class="btn w-100" @click="switchToEditSavings">Ändra Sparande</button>
     <RouterLink class="btn" to="/add-expense">Lägg till utgift</RouterLink>
+  </Modal>
+  <Modal :visible="showEditSavings" @close="showEditSavings = false">
+    <form class="p-2" @submit.prevent="handleUpdateSavings">
+      <div class="text-center">
+        <p class="h3 mb-2">Hur mycket vill du spara?</p>
+        <input type="number" v-model="savingsAmount" class="form-control mb-2">
+        <button class="btn form-btn">Spara</button>
+      </div>
+    </form>
   </Modal>
   <Block class="h-100 text-center">
     <h1>Mina utgifter</h1>
@@ -38,6 +47,19 @@ expensesStore.getExpenses()
 const { savings, expenses, uniqueCategories, totalExpenses } = storeToRefs(expensesStore)
 
 const showModal = ref(false)
+const showEditSavings = ref(false)
+const savingsAmount = ref('')
+
+const switchToEditSavings = () => {
+  showModal.value = false
+  showEditSavings.value = true
+}
+
+const handleUpdateSavings = async () => {
+  await expensesStore.updateSavings(savingsAmount.value)
+  showEditSavings.value = false
+  savingsAmount.value = ''
+}
 
 </script>
 

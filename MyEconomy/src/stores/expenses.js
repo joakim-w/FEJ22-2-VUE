@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { auth, db } from '../firebase/config'
-import { collection, getDocs, query, where } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDocs, query, updateDoc, where } from 'firebase/firestore'
 
 export const useExpensesStore = defineStore('expenses', () => {
 
@@ -20,6 +20,7 @@ export const useExpensesStore = defineStore('expenses', () => {
   const totalExpenses = computed(() => {
     let total = 0
     exp.value.forEach(item => total += item.amount)
+    total += savings.value.amount
     return total
   })
 
@@ -48,6 +49,30 @@ export const useExpensesStore = defineStore('expenses', () => {
 
   }
 
+  const updateSavings = async (_amount) => {
+    const savingsRef = doc(db, 'savings', savings.value.id)
+    try {
+      await updateDoc(savingsRef, {amount: _amount})
+      savings.value.amount = _amount
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  const updateExpense = async (item, _amount) => {
+    const expenseRef = doc(db, 'expenses', item.id)
+    try {
+      await updateDoc(expenseRef, {amount: _amount})
+      getExpenses()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const removeExpense = async (id) => {
+    await deleteDoc(doc(db, 'expenses', id))
+    exp.value = exp.value.filter(e => e.id !== id)
+  }
+
   const getExpenses = async () => {
     user.value = auth.currentUser
     if(!user.value) {
@@ -55,7 +80,8 @@ export const useExpensesStore = defineStore('expenses', () => {
       // getExpenses()
       return
     }
-    getExpenses()
+    // getExpenses() // HÄR BÖR DET JU STÅ GET SAVINGS.... Elleeeer??
+    getSavings()
     exp.value = []
 
     const colRef = collection(db, 'expenses')
@@ -67,5 +93,5 @@ export const useExpensesStore = defineStore('expenses', () => {
     })
   }
 
-  return { savings, expenses, uniqueCategories, getExpenses, totalExpenses }
+  return { savings, expenses, uniqueCategories, getExpenses, totalExpenses, updateSavings, updateExpense, removeExpense }
 })
