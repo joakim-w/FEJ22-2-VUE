@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
+import ExpensesView from '../views/ExpensesView.vue'
 
 import { auth } from '../firebase/config'
 
@@ -32,6 +33,12 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+      beforeEnter: requireAuth
+    },
+    {
+      path: '/expenses',
+      name: 'expenses',
+      component: ExpensesView,
       beforeEnter: requireAuth
     },
     {
