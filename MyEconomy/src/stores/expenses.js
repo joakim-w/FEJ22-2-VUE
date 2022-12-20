@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { auth, db } from '../firebase/config'
-import { collection, deleteDoc, doc, getDocs, query, updateDoc, where } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, getDocs, query, updateDoc, where } from 'firebase/firestore'
 
 export const useExpensesStore = defineStore('expenses', () => {
 
@@ -93,5 +93,14 @@ export const useExpensesStore = defineStore('expenses', () => {
     })
   }
 
-  return { savings, expenses, uniqueCategories, getExpenses, totalExpenses, updateSavings, updateExpense, removeExpense }
+  const addExpense = async (formData) => {
+    user.value = auth.currentUser
+
+    const docRef = await addDoc(collection(db, 'expenses'), {...formData, userId: user.value.uid})
+    if(docRef.id) {
+      exp.value.push({id: docRef.id, ...formData})
+    }
+  }
+
+  return { savings, expenses, uniqueCategories, getExpenses, totalExpenses, updateSavings, updateExpense, removeExpense, addExpense }
 })
