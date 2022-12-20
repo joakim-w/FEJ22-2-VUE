@@ -3,8 +3,13 @@ import { ref } from 'vue'
 import { auth, googleProvider, db } from '../firebase/config'
 import { signInWithEmailAndPassword, onAuthStateChanged, createUserWithEmailAndPassword, signOut, signInWithPopup } from 'firebase/auth'
 import { getDocs, addDoc, collection, query, where } from 'firebase/firestore'
+import { useIncomeStore } from './incomes'
+import { useExpensesStore } from './expenses'
 
 export const useAuthStore = defineStore('auth', () => {
+
+  const incomesStore = useIncomeStore()
+  const expensesStore = useExpensesStore()
 
   onAuthStateChanged(auth, _user => {
     console.log('User state change. Current user is: ', _user)
@@ -66,6 +71,9 @@ export const useAuthStore = defineStore('auth', () => {
 
     try {
       await signOut(auth)
+      incomesStore.incomes = []
+      expensesStore.exp = []
+      expensesStore.savings = { name: 'Sparande', amount: 0 }
     } catch (err) {
       console.log(err.message)
       error.value = err.message

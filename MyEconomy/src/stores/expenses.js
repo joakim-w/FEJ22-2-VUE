@@ -102,5 +102,5 @@ export const useExpensesStore = defineStore('expenses', () => {
     }
   }
 
-  return { savings, expenses, uniqueCategories, getExpenses, totalExpenses, updateSavings, updateExpense, removeExpense, addExpense }
+  return { exp, savings, expenses, uniqueCategories, getExpenses, totalExpenses, updateSavings, updateExpense, removeExpense, addExpense }
 })

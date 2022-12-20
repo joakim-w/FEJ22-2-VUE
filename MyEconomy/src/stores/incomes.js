@@ -1,4 +1,4 @@
-import { collection, getDocs, query, where, doc, updateDoc, deleteDoc } from 'firebase/firestore'
+import { collection, getDocs, query, where, doc, updateDoc, deleteDoc, addDoc } from 'firebase/firestore'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { db, auth } from '../firebase/config'
@@ -48,6 +48,15 @@ export const useIncomeStore = defineStore('incomes', () => {
     incomes.value = incomes.value.filter(income => income.id !== id)
   }
 
-  return { incomes, getIncomes, totalIncome, updateIncome, removeIncome }
+  const addIncome = async (formData) => {
+    user.value = auth.currentUser
+
+    const docRef = await addDoc(collection(db, 'incomes'), {...formData, userId: user.value.uid})
+    if(docRef.id) {
+      incomes.value.push({id: docRef.id, ...formData})
+    }
+  }
+
+  return { incomes, getIncomes, totalIncome, updateIncome, removeIncome, addIncome }
 
 })

@@ -75,7 +75,7 @@ const incomesStore = useIncomeStore()
     // showEditItem.value = false
   }
   const handleRemove = async () => {
-    if(props.income) {
+    if(props.isIncome) {
       // hatera borttagning av inkomst
       await incomesStore.removeIncome(props.item.id)
     } else {

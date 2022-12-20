@@ -1,5 +1,5 @@
 <template>
-  <AddButton />
+  <AddButton @click="addToIncome" />
   <Block class="h-100 text-center">
     <h1>Min inkomster</h1>
     <HealthPartial />
@@ -15,6 +15,7 @@
 
 <script setup>
 import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
 import AddButton from '../components/AddButton.vue';
 import Block from '../components/Block.vue'
 import HealthPartial from '../components/HealthPartial.vue';
@@ -25,6 +26,11 @@ import { useIncomeStore } from '../stores/incomes';
 const incomesStore = useIncomeStore()
 const { incomes, totalIncome } = storeToRefs(incomesStore)
 
+const router = useRouter()
+
+const addToIncome = () => {
+  router.push({ name: 'addIncome' })
+}
 
 </script>
 

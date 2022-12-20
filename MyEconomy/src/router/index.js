@@ -5,6 +5,7 @@ import RegisterView from '../views/RegisterView.vue'
 import ExpensesView from '../views/ExpensesView.vue'
 import AddExpenseView from '../views/AddExpenseView.vue'
 import IncomeView from '../views/IncomeView.vue'
+import AddIncomeView from '../views/AddIncomeView.vue'
 
 import { auth } from '../firebase/config'
 
@@ -53,6 +54,12 @@ const router = createRouter({
       path: '/add-expense',
       name: 'addExpense',
       component: AddExpenseView,
+      beforeEnter: requireAuth
+    },
+    {
+      path: '/add-income',
+      name: 'addIncome',
+      component: AddIncomeView,
       beforeEnter: requireAuth
     },
     {

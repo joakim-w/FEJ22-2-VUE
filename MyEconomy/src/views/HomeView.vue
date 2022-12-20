@@ -3,14 +3,14 @@
     <div class="text-center">
       <h1>Din ekonomi just nu</h1>
       <HealthPartial />
-      <div v-if="true">
+      <div v-if="health >= 20">
         <p class="text-bold mt-5">Du har i snitt</p>
-        <p class="h2">10000</p>
+        <p class="h2">{{ overUnder }}</p>
         <p class="text-bold">över varje måndad</p>
       </div>
       <div v-else>
         <p class="text-bold mt-5">Du går back</p>
-        <p class="h2">10000</p>
+        <p class="h2">{{ overUnder }}</p>
         <p class="text-bold">varje måndad</p>
       </div>
     </div>
@@ -28,13 +28,13 @@
         </InfoButton>
 
       </p>
-      <p>100 kr</p>
+      <p>{{ recommendedSavings }} kr</p>
     </div>
   </Block>
   <Block class="mt-1">
     <div class="d-flex justify-between">
       <p>Inkomster</p>
-      <p>60000</p>
+      <p>{{ totalIncome }}</p>
     </div>
     <div class="d-flex justify-between mt-3">
       <p>Utgifter</p>
@@ -55,11 +55,18 @@ import InfoButton from '../components/InfoButton.vue';
 
 import { useExpensesStore } from '@/stores/expenses'
 import { storeToRefs } from 'pinia';
+import { useFeedbackStore } from '../stores/feedback';
+import { useIncomeStore } from '../stores/incomes';
 
 const expensesStore = useExpensesStore()
+const feedbackStore = useFeedbackStore()
+const incomesStore = useIncomeStore()
 expensesStore.getExpenses()
+incomesStore.getIncomes()
 
+const { totalIncome } = storeToRefs(incomesStore)
 const { totalExpenses, savings } = storeToRefs(expensesStore)
+const { overUnder, health, recommendedSavings } = storeToRefs(feedbackStore)
 
 </script>
 
