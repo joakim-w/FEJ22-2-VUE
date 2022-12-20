@@ -5,8 +5,8 @@
         <div class="menu">
           <button @click="logoutUser" class="btn w-100"><i class="fa-solid fa-right-from-bracket"></i> Logga ut</button>
           <RouterLink to="/" @click="$emit('close')" class="btn"><i class="fa-solid fa-house"></i> Startsida</RouterLink>
-          <RouterLink to="/" @click="$emit('close')" class="btn"><i class="fa-solid fa-coins"></i> Inkomster</RouterLink>
-          <RouterLink to="/" @click="$emit('close')" class="btn"><i class="fa-solid fa-chart-column"></i> Utgifter</RouterLink>
+          <RouterLink to="/income" @click="$emit('close')" class="btn"><i class="fa-solid fa-coins"></i> Inkomster</RouterLink>
+          <RouterLink to="/expenses" @click="$emit('close')" class="btn"><i class="fa-solid fa-chart-column"></i> Utgifter</RouterLink>
         </div>
       </div>
     </Transition>

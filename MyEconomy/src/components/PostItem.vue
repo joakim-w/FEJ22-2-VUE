@@ -41,8 +41,10 @@ import InfoButton from './InfoButton.vue';
 import { ref } from 'vue'
 import Modal from './Modal.vue';
 import { useExpensesStore } from '@/stores/expenses'
+import { useIncomeStore } from '../stores/incomes';
 
 const expensesStore = useExpensesStore()
+const incomesStore = useIncomeStore()
 
   const props = defineProps({
     item: {
@@ -65,6 +67,7 @@ const expensesStore = useExpensesStore()
   const handleSubmit = async () => {
     if(props.isIncome) {
       // hatera uppdatering av inkomst
+      await incomesStore.updateIncome(props.item, newAmount.value)
     } else {
       await expensesStore.updateExpense(props.item, newAmount.value)
     }
@@ -74,6 +77,7 @@ const expensesStore = useExpensesStore()
   const handleRemove = async () => {
     if(props.income) {
       // hatera borttagning av inkomst
+      await incomesStore.removeIncome(props.item.id)
     } else {
       await expensesStore.removeExpense(props.item.id)
     }

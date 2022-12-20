@@ -4,6 +4,7 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import ExpensesView from '../views/ExpensesView.vue'
 import AddExpenseView from '../views/AddExpenseView.vue'
+import IncomeView from '../views/IncomeView.vue'
 
 import { auth } from '../firebase/config'
 
@@ -34,6 +35,12 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+      beforeEnter: requireAuth
+    },
+    {
+      path: '/income',
+      name: 'income',
+      component: IncomeView,
       beforeEnter: requireAuth
     },
     {

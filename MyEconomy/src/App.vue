@@ -10,6 +10,15 @@ import { useRoute } from 'vue-router'
   import HamburgerBar from './components/HamburgerBar.vue'
   import NavMenu from './components/NavMenu.vue';
 
+  import { useIncomeStore } from './stores/incomes';
+  import { useExpensesStore } from './stores/expenses';
+
+  const incomesStore = useIncomeStore()
+  const expensesStore = useExpensesStore()
+
+  incomesStore.getIncomes()
+  expensesStore.getExpenses()
+
   const route = useRoute()
   const visible = ref(false)
 

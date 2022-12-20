@@ -43,7 +43,6 @@ import { ref } from 'vue'
 import Modal from '../components/Modal.vue';
 
 const expensesStore = useExpensesStore()
-expensesStore.getExpenses()
 const { savings, expenses, uniqueCategories, totalExpenses } = storeToRefs(expensesStore)
 
 const showModal = ref(false)
